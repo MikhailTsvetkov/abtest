@@ -9,7 +9,7 @@ nano .env
 docker compose up -d
 ```
 
-Сервер запустится на `http::/localhost:3000`.
+Сервер запустится на `http://localhost:3000`.
 
 ## Composer
 ```shell
