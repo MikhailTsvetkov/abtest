@@ -27,6 +27,10 @@ final readonly class ArticleController
             throw new HttpException(404, 'Статья не найдена.');
         }
 
+        $this->articlesStorage->incrementViews($article->id);
+        $article = $this->articlesStorage->getById($article->id)
+            ?? throw new HttpException(404, 'Статья не найдена.');
+
         return $this->view->page('article.tpl', [
             'article' => $article,
             'categories' => $this->categoriesStorage->getForArticle($article->id),

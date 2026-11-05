@@ -23,6 +23,8 @@ interface ArticlesStorage
 
     public function getById(int $id): ?Article;
 
+    public function incrementViews(int $id): void;
+
     /**
      * @return array<int, Article[]>
      */

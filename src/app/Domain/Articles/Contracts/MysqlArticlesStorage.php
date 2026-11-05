@@ -58,6 +58,14 @@ final readonly class MysqlArticlesStorage implements ArticlesStorage
         return $this->rowsToArticles($rows)[0] ?? null;
     }
 
+    public function incrementViews(int $id): void
+    {
+        $this->db->execute(
+            'UPDATE articles SET views_count = views_count + 1 WHERE id = :id',
+            ['id' => $id],
+        );
+    }
+
     public function getLatestForCategories(array $categoryIds, int $limit = 3): array
     {
         if ($categoryIds === []) {
