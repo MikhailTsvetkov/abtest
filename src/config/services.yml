@@ -13,3 +13,13 @@ services:
   App\Controllers\:
     resource: '../app/Controllers/*'
     public: true
+
+  App\DependencyInjection\ServiceContainer:
+    arguments: ['@service_container']
+
+  App\DependencyInjection\ContainerInterface:
+    alias: App\DependencyInjection\ServiceContainer
+    public: true
+
+  Psr\Container\ContainerInterface:
+    alias: App\DependencyInjection\ServiceContainer

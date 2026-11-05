@@ -12,8 +12,10 @@ final readonly class UserController
         private UserRepository $userRepository,
     ) {}
 
-    public function show(int $id): array
+    public function show(int $id): string
     {
-        return $this->userRepository->findUser($id);
+        return '<pre>' .
+            json_encode($this->userRepository->findUser($id), JSON_PRETTY_PRINT) .
+            '<pre>';
     }
 }
