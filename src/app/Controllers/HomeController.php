@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Domain\Categories\Contracts\CategoriesStorage;
 use App\Domain\Articles\Contracts\ArticlesStorage;
+use App\Http\JsonResponse;
 
 final readonly class HomeController
 {
@@ -14,7 +15,7 @@ final readonly class HomeController
         private ArticlesStorage $articlesStorage,
     ) {}
 
-    public function index(): string
+    public function index(): JsonResponse
     {
         $categories = $this->categoriesStorage->getWithArticles();
         $latest = $this->articlesStorage->getLatestForCategories(
@@ -30,8 +31,6 @@ final readonly class HomeController
             ];
         }
 
-        return '<pre>' .
-            json_encode(['categories' => $items], JSON_PRETTY_PRINT) .
-            '<pre>';
+        return new JsonResponse(['categories' => $items]);
     }
 }

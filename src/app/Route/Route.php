@@ -3,23 +3,16 @@
 namespace App\Route;
 
 use App\DependencyInjection\Container;
+use App\Http\JsonResponse;
 
 final class Route
 {
-    private static self $instance;
     private array $vars = [];
 
     private function __construct(
         private readonly string $controller,
         private readonly string $action,
     ) {}
-
-    private static function getInstance(string $controller, string $action): self
-    {
-        self::$instance ??= new self($controller, $action);
-
-        return self::$instance;
-    }
 
     public static function get(
         string $uri,
@@ -30,7 +23,7 @@ final class Route
             return;
         }
 
-        $route = self::getInstance($controller, $action);
+        $route = new self($controller, $action);
 
         if (!$route->checkUri($uri)) {
             return;
@@ -45,7 +38,7 @@ final class Route
             return;
         }
 
-        $route = self::getInstance($controller, $action);
+        $route = new self($controller, $action);
 
         if (!$route->checkUri($uri)) {
             return;
@@ -54,49 +47,36 @@ final class Route
         $route->run();
     }
 
-    public static function responseNotFound(): void
+    public static function responseNotFound(): never
     {
-        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-
-        exit;
+        (new JsonResponse(['error' => 'Страница не найдена.'], 404))->send();
     }
 
     private function checkUri(string $routeUri): bool
     {
-        // Получаем $requestUri из $_SERVER['REQUEST_URI'], отбрасывая query
-        $requestUri = strtok($_SERVER['REQUEST_URI'], '?');
-
-        // Удаляем оборачивающие слэши из $route_uri и $requestUri и приводим к нижнему регистру
-        $routeUri = strtolower(trim($routeUri, '/'));
-        $requestUri = strtolower(trim($requestUri, '/'));
-
-        // Получаем переменные, если они есть
-        $vars = [];
-        preg_match_all('/\$([a-zA-Z0-9_]+)/', $routeUri, $vars);
-        $varNames = $vars[1];
-
-        // Заменяем переменные на регулярные выражения, если они есть
-        $routeUriRegex = preg_replace_callback(
-            '/\$([a-zA-Z0-9_]+)/',
-            fn ($matches) => '([a-zA-Z0-9_-]+)',
-            $routeUri,
-        );
-
-        if (preg_match('#^' . $routeUriRegex . '$#', $requestUri, $matches)) {
-            // Извлекаем значения переменных
-            $varValues = array_slice($matches, 1);
-
-            // Сохраняем переменные, если они есть, в массиве $this->vars
-            if (!empty($varNames)) {
-                foreach ($varNames as $index => $varName) {
-                    $this->vars[$varName] = $varValues[$index];
-                }
-            }
-
-            return true;
+        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if (!is_string($requestUri)) {
+            return false;
         }
 
-        return false;
+        $parts = [];
+        foreach (explode('/', trim($routeUri, '/')) as $part) {
+            $parts[] = preg_match('/^\$([a-zA-Z_][a-zA-Z0-9_]*)$/D', $part, $match)
+                ? '(?P<' . $match[1] . '>[a-zA-Z0-9_-]+)'
+                : preg_quote($part, '#');
+        }
+
+        if (!preg_match('#^' . implode('/', $parts) . '$#D', trim($requestUri, '/'), $matches)) {
+            return false;
+        }
+
+        foreach ($matches as $name => $value) {
+            if (is_string($name)) {
+                $this->vars[$name] = $value;
+            }
+        }
+
+        return true;
     }
 
     private function run(): void
@@ -110,6 +90,12 @@ final class Route
         }
 
         // Выполняем экшен
-        die ($controller->{$this->action}(...$this->vars));
+        $response = $controller->{$this->action}(...$this->vars);
+        if ($response instanceof JsonResponse) {
+            $response->send();
+        }
+
+        echo $response;
+        exit;
     }
 }
