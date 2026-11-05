@@ -5,7 +5,8 @@
         "symfony/config": "^8.1",
         "symfony/yaml": "^8.1",
         "vlucas/phpdotenv": "^5.8",
-        "robmorgan/phinx": "^0.16.12"
+        "robmorgan/phinx": "^0.16.12",
+        "ext-pdo": "*"
     },
     "scripts": {
         "phinx": "@php vendor/bin/phinx --configuration=src/config/phinx.php"

@@ -26,6 +26,7 @@ final readonly class DbServiceProvider implements ServiceProviderInterface
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_EMULATE_PREPARES => 0,
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET time_zone = '+00:00'",
                 ]
             ));
 

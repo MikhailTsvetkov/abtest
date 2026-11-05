@@ -1,8 +1,8 @@
 <?php
 
-use App\Controllers\UserController;
+use App\Controllers\HomeController;
 use App\Route\Route;
 
-Route::get('/$id', UserController::class, 'show');
+Route::get('/', HomeController::class, 'index');
 
 Route::responseNotFound();
