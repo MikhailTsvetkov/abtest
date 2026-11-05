@@ -9,5 +9,5 @@ AI не использовался. Использовались мои стар
 
 ServiceProviders размещаются в `src/app/ServiceProviders`.
 
-## Routing
+## Routing, Config, Database
 AI не использовался. Использовались мои старые наработки.
