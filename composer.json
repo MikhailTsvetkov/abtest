@@ -3,7 +3,8 @@
         "php": "~8.4.0",
         "symfony/dependency-injection": "^8.1",
         "symfony/config": "^8.1",
-        "symfony/yaml": "^8.1"
+        "symfony/yaml": "^8.1",
+        "vlucas/phpdotenv": "^5.8"
     },
     "autoload": {
         "psr-4": {

@@ -35,10 +35,12 @@ services:
             retries: 30
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: mysql
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_RANDOM_ROOT_PASSWORD: "yes"
         ports:
-            - "${EXT_DB_PORT}:3306"
+            - "${EXT_DB_PORT}:${DB_PORT}"
         volumes:
             - mysql-data:/var/lib/mysql
         networks:
