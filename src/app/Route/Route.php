@@ -3,7 +3,8 @@
 namespace App\Route;
 
 use App\DependencyInjection\Container;
-use App\Http\JsonResponse;
+use App\Http\HttpException;
+use App\Http\ResponseInterface;
 
 final class Route
 {
@@ -49,7 +50,7 @@ final class Route
 
     public static function responseNotFound(): never
     {
-        (new JsonResponse(['error' => 'Страница не найдена.'], 404))->send();
+        throw new HttpException(404, 'Страница не найдена.');
     }
 
     private function checkUri(string $routeUri): bool
@@ -91,7 +92,7 @@ final class Route
 
         // Выполняем экшен
         $response = $controller->{$this->action}(...$this->vars);
-        if ($response instanceof JsonResponse) {
+        if ($response instanceof ResponseInterface) {
             $response->send();
         }
 

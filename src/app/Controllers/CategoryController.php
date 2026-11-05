@@ -9,17 +9,19 @@ use App\Domain\Articles\Contracts\ArticlesStorage;
 use App\Domain\Articles\Enum\Sort;
 use App\Domain\Categories\Contracts\CategoriesStorage;
 use App\Http\HttpException;
-use App\Http\JsonResponse;
+use App\Http\ResponseInterface;
 use App\Http\Request;
+use App\View\PageRenderer;
 
 final readonly class CategoryController
 {
     public function __construct(
         private CategoriesStorage $categoriesStorage,
         private ArticlesStorage $articlesStorage,
+        private PageRenderer $view,
     ) {}
 
-    public function show(string $id): JsonResponse
+    public function show(string $id): ResponseInterface
     {
         $category = $this->categoriesStorage->getById(Request::id($id));
 
@@ -55,7 +57,7 @@ final readonly class CategoryController
             'per_page' => $perPage,
         ]);
 
-        return new JsonResponse([
+        return $this->view->page('category.tpl', [
             'category' => $category,
             'articles' => $this->articlesStorage->getPage(
                 ($page - 1) * $perPage,
@@ -74,6 +76,6 @@ final readonly class CategoryController
                 'previous_url' => $page > 1 ? $pageUrl($page - 1) : null,
                 'next_url' => $page < $totalPages ? $pageUrl($page + 1) : null,
             ],
-        ]);
+        ], $category->name);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-final readonly class JsonResponse
+final readonly class JsonResponse implements ResponseInterface
 {
     public function __construct(public array $data, public int $status = 200) {}
 
@@ -17,6 +17,7 @@ final readonly class JsonResponse
 
         http_response_code($this->status);
         header('Content-Type: application/json; charset=utf-8');
+        header('Vary: Accept');
 
         die($json);
     }

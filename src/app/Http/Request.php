@@ -8,6 +8,11 @@ final class Request
 {
     private function __construct() {}
 
+    public static function wantsJson(): bool
+    {
+        return str_contains(strtolower($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
+    }
+
     public static function id(string $value): int
     {
         $id = filter_var(

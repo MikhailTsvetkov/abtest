@@ -6,16 +6,18 @@ namespace App\Controllers;
 
 use App\Domain\Categories\Contracts\CategoriesStorage;
 use App\Domain\Articles\Contracts\ArticlesStorage;
-use App\Http\JsonResponse;
+use App\Http\ResponseInterface;
+use App\View\PageRenderer;
 
 final readonly class HomeController
 {
     public function __construct(
         private CategoriesStorage $categoriesStorage,
         private ArticlesStorage $articlesStorage,
+        private PageRenderer $view,
     ) {}
 
-    public function index(): JsonResponse
+    public function index(): ResponseInterface
     {
         $categories = $this->categoriesStorage->getWithArticles();
         $latest = $this->articlesStorage->getLatestForCategories(
@@ -31,6 +33,6 @@ final readonly class HomeController
             ];
         }
 
-        return new JsonResponse(['categories' => $items]);
+        return $this->view->page('home.tpl', ['categories' => $items], 'Главная');
     }
 }
