@@ -3,8 +3,8 @@
 namespace App\Route;
 
 use App\DependencyInjection\Container;
-use App\Http\HttpException;
-use App\Http\ResponseInterface;
+use App\Http\Exceptions\HttpException;
+use App\Http\Response\Contracts\ResponseInterface;
 
 final class Route
 {

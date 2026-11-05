@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
 use App\Database\Enum\Direction;
 use App\Domain\Articles\Contracts\ArticlesStorage;
 use App\Domain\Articles\Enum\Sort;
 use App\Domain\Categories\Contracts\CategoriesStorage;
-use App\Http\HttpException;
-use App\Http\ResponseInterface;
-use App\Http\Request;
+use App\Http\Exceptions\HttpException;
+use App\Http\Request\Request;
+use App\Http\Response\Contracts\ResponseInterface;
 use App\View\PageRenderer;
 
 final readonly class CategoryController
@@ -21,6 +21,8 @@ final readonly class CategoryController
         private PageRenderer $view,
     ) {}
 
+
+    // Todo: Сделать аналогично ArticleController - раскидать по экшенам, обрабатывать выбрасываемые исключения, преобразовывая в Http-исключения
     public function show(string $id): ResponseInterface
     {
         $category = $this->categoriesStorage->getById(Request::id($id));

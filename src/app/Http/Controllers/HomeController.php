@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
-use App\Domain\Categories\Contracts\CategoriesStorage;
 use App\Domain\Articles\Contracts\ArticlesStorage;
-use App\Http\ResponseInterface;
+use App\Domain\Categories\Contracts\CategoriesStorage;
+use App\Http\Response\Contracts\ResponseInterface;
 use App\View\PageRenderer;
 
 final readonly class HomeController

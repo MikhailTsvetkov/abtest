@@ -1,8 +1,8 @@
 <?php
 
-use App\Controllers\HomeController;
-use App\Controllers\CategoryController;
-use App\Controllers\ArticleController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Route\Route;
 
 Route::get('/', HomeController::class, 'index');

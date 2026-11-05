@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http;
+namespace App\Http\Response;
+
+use App\Http\Response\Contracts\ResponseInterface;
 
 final readonly class HtmlResponse implements ResponseInterface
 {

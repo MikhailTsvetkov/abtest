@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\View;
 
-use App\Http\HtmlResponse;
-use App\Http\JsonResponse;
-use App\Http\Request;
-use App\Http\ResponseInterface;
+use App\Http\Request\Request;
+use App\Http\Response\Contracts\ResponseInterface;
+use App\Http\Response\HtmlResponse;
+use App\Http\Response\JsonResponse;
 use Smarty\Smarty;
 use Throwable;
 

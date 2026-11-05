@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http;
+namespace App\Http\Request;
+
+use App\Http\Exceptions\HttpException;
 
 final class Request
 {

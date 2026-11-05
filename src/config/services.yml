@@ -10,8 +10,8 @@ services:
       - '../app/DependencyInjection/'
       - '../app/ServiceProviders/'
 
-  App\Controllers\:
-    resource: '../app/Controllers/*'
+  App\Http\Controllers\:
+    resource: '../app/Http/Controllers/*'
     public: true
 
   App\DependencyInjection\ServiceContainer:

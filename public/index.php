@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\HttpException;
+use App\Http\Exceptions\HttpException;
 use App\View\PageRenderer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
