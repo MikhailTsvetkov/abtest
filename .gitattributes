@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.tpl diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+*.php text eol=lf
+Dockerfile text eol=lf
